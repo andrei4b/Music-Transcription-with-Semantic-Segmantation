@@ -26,10 +26,10 @@ def generator_audio2(batch_size,
     # Set chorale_indices
     if phase == 'train':
         chorale_indices = np.arange(int(len(data) * percentage_train))
-        chorale_indices = np.arange(len_train) # hack for maestro
+        #chorale_indices = np.arange(len_train) # hack for maestro
     if phase == 'test':
         chorale_indices = np.arange(int(len(data) * percentage_train), len(data))
-        chorale_indices = np.arange(len_train, len_train+len_val) # hack for maestro
+        #chorale_indices = np.arange(len_train, len_train+len_val) # hack for maestro
     if phase == 'all':
         chorale_indices = np.arange(int(len(data)))
 

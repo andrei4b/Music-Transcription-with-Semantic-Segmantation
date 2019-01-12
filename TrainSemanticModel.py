@@ -77,7 +77,7 @@ def main():
     # Arguments setting
     TIMESTEPS = args.window_width
     if " + " in args.output_model_name:
-        args.output_model_name = args.output_model_name[0:13] + str(args.channel)
+        args.output_model_name = args.output_model_name[0:13] + str(args.channels)
     
     ch_num = len(args.channels)
     if args.MusicNet_feature_path is not None:
@@ -87,7 +87,7 @@ def main():
         if args.no_harmonic == True:
             ch_num = 2
             args.channels = [0, 6] # Spec. and Ceps. channel
-            args.channels = [1, 3] # For train on maestro
+            #args.channels = [1, 3] # For train on maestro
             feature_type  = "CFP"
         else:
             ch_num = Harmonic_Num * 2

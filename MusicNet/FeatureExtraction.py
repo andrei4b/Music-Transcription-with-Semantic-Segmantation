@@ -119,8 +119,8 @@ def Manage_Feature_Process(audio_path,
                 id = id[(id.rfind("/")+1):]
                 writer.writerow([f_name, id, save_path])
 
-            if True:
-                break
+            # if True:
+            #     break
 
 
 if __name__ == "__main__":

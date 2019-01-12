@@ -119,7 +119,7 @@ def main(args):
     
     # Print figure
     base_path = args.input_audio[:args.input_audio.rfind("/")]
-    save_name = os.path.join(base_path, args.output_fig_name)
+    save_name = os.path.join(args.output_fig_name)
     
     plot_range = range(500, 1500)
     if max(plot_range) > len(pred):
