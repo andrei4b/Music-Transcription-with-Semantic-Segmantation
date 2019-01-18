@@ -21,6 +21,9 @@ def ProcessLabel(gt_path, t_unit=0.02, length=None, pitch_width=352, base=88):
     queue = []
     base_note = librosa.note_to_midi("A0")
     for i in range(1, len(lines)):
+        # print(lines[i].split("\t"))
+        if(len(lines[i].split("\t")) != 3):
+            continue
         onset, offset, midi = lines[i].split("\t")
         onset, offset, midi = float(onset), float(offset), int(midi[:midi.find("\n")])
         

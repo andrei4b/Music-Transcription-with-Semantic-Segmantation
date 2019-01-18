@@ -5,6 +5,9 @@ import glob, os
 import pickle
 from FeatureExtraction import Manage_Feature_Process
 from MAPS_ProcessLabel import ProcessLabel
+import argparse
+import numpy as np
+from tqdm import trange
 
 
 
@@ -32,7 +35,8 @@ def Manage_Process_Label(files, save_path, num_per_file, t_unit=0.02):
         for sf in sub_files:
             labels.append(ProcessLabel(sf, t_unit=t_unit))
 
-        f_name = "train" if "train" in files[0] else "test"
+        print(files[0])
+        f_name = "train" if "train" in save_path else "test"
         post   = "_{}_{}_label.pickle".format(num_per_file, i+1)
         f_name += post
         f_name = os.path.join(save_path, f_name)
@@ -46,7 +50,17 @@ def main(args):
     test_folders  = [os.path.join(args.MAPS_path, ff, "MUS") for ff in test_folders]
     
     train_audios = list_wavs(train_folders)
+    train_audios = [item for sublist in train_audios for item in sublist] #flatten list
+    # for ff in train_audios:
+    # 	print(ff)
+
     test_audios  = list_wavs(test_folders)
+    test_audios = [item for sublist in test_audios for item in sublist] #flatten list
+    # for ff in test_audios:
+    # 	print(ff)
+
+    if args.save_path is None:
+        args.save_path = os.path.join(args.MAPS_path, "./features")
     
     train_save_path = os.path.join(args.save_path, "train")
     if not os.path.exists(train_save_path):
@@ -59,12 +73,13 @@ def main(args):
     test_save_name  = "test_" + str(args.test_num_per_file)
     
     # Process training features
-    Manage_Feature_Process(train_audios, train_save_path, train_save_name, num_per_file=args.train_num_per_file)
-    Manage_Process_Label(train_audios, args.train_save_path, args.train_num_per_file)
+    #Manage_Feature_Process(train_audios, train_save_path, train_save_name, num_per_file=args.train_num_per_file, harmonic=not args.no_harmonic)
+    Manage_Process_Label(train_audios, train_save_path, args.train_num_per_file)
+    print("Finished with train labels")
     
     # Process testing features
-    Manage_Feature_Process(test_audios, test_save_path, test_save_name, num_per_file=args.test_num_per_file)
-    Manage_Process_Label(test_audios, args.test_save_path, args.test_num_per_file)
+    #Manage_Feature_Process(test_audios, test_save_path, test_save_name, num_per_file=args.test_num_per_file, harmonic=not args.no_harmonic)
+    Manage_Process_Label(test_audios, test_save_path, args.test_num_per_file)
 
 
 if __name__ == "__main__":
