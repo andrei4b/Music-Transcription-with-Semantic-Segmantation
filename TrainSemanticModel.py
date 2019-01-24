@@ -104,6 +104,7 @@ def main():
         dataset_type = "MAPS"
         feature_type = "CFP"
         args.no_harmonic = True
+        args.mpe_only = True #added by me
     else:
         assert(False), "Please at least assign one of the flags: --MAPS-feature-path or --MusicNet-feature-path"
         

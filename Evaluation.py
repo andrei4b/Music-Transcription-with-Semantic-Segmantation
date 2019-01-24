@@ -258,7 +258,7 @@ if __name__ == "__main__":
 
     # Parameter settings
     
-    validate = True
+    validate = False #changed by me
     onsets = False
     
 
@@ -282,9 +282,9 @@ if __name__ == "__main__":
         t_preds = [p[:,:,args.spec_instrument] for p in t_preds]
         t_labels = [l[:,:,args.spec_instrument] for l in t_labels]
 
-    evaluate(t_preds, t_labels, threshold=best['th'], onsets=onsets)
-    print("Result of evalution on " + MusicNet_Instruments[args.spec_instrument])
-    print("Best setting: ", best, "Searched thresholds: ", thresholds)
+    evaluate(t_preds, t_labels, threshold=0.373, onsets=onsets) #threshold=best['th']
+    #print("Result of evalution on " + MusicNet_Instruments[args.spec_instrument])
+    #print("Best setting: ", best, "Searched thresholds: ", thresholds)
 
             
             

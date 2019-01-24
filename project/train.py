@@ -36,7 +36,7 @@ def generator_audio2(batch_size,
     for a in range(len(label)):
         if a in chorale_indices:
             new_y = np.array(Y[a])
-            Y[a] = padding(new_y, 384, timesteps, muti_instrument=True)
+            Y[a] = padding(new_y, 384, timesteps, muti_instrument=False) #changed to False by me
 
     features_48 = []
     features_12 = []
@@ -58,7 +58,7 @@ def generator_audio2(batch_size,
         if dataset_type=="MusicNet":
             label = label_conversion(label, 384, timesteps, mpe=mpe_only)
         else:
-            label = to_categorical(label, num_classes=2)
+            label = to_categorical(label, 2) #num_classes=2
 
         features_48.append(feature_48)
         features_12.append(feature_12)
