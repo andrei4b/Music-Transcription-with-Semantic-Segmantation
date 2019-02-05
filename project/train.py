@@ -47,8 +47,6 @@ def generator_audio2(batch_size,
         chorale_index = np.random.choice(chorale_indices)
         chorale_length = min(len(Y[chorale_index]), len(data[chorale_index]))
 
-        print(len(Y[chorale_index]), len(data[chorale_index]))
-
         time_index = np.random.randint(0, chorale_length - timesteps)
 
         feature_48 = augment_hdf(data, chorale_index, time_index, timesteps, channels)
@@ -58,7 +56,7 @@ def generator_audio2(batch_size,
         if dataset_type=="MusicNet":
             label = label_conversion(label, 384, timesteps, mpe=mpe_only)
         else:
-            label = to_categorical(label, 2) #num_classes=2
+            label = to_categorical(label, num_classes=2) 
 
         features_48.append(feature_48)
         features_12.append(feature_12)

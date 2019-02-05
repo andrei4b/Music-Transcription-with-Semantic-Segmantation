@@ -62,7 +62,7 @@ def make_dataset_audio(dataset_name,
         
         out  = feature_extraction(song, fc=freq_range[0], tc=(1/freq_range[1]))
         cenf = out[5]
-        #z, spec, gcos, ceps, cenf = out[0:5]
+        #Z, tfrL0, tfrLF, tfrLQ, t, CenFreq, f = out[0:7]
 
         piece = np.transpose(np.array(out[0:4]), axes=(2, 1, 0))
         
@@ -132,8 +132,8 @@ def Manage_Feature_Process(audio_path,
                 id = id[(id.rfind("/")+1):]
                 writer.writerow([f_name, id, save_path])
 
-            # if True:
-            #     break
+            if True:
+                break
 
 
 if __name__ == "__main__":

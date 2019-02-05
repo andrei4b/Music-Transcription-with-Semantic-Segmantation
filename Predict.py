@@ -1,6 +1,4 @@
-﻿
-
-import os
+﻿import os
 import ast
 import csv
 import h5py
@@ -11,10 +9,7 @@ import numpy as np
 from tqdm import trange
 
 from project.test import inference
-from project.utils import label_conversion, load_model
-
-
-
+from project.utils import label_conversion, load_model, model_info
 
 
 def roll_down_sample(data, threshold=0.5, occur_num=2, base=88):
@@ -130,18 +125,6 @@ def load_files(paths, use_ram=True):
             assert("False"), "No matching files with extension '{}'".format(ext)
 
     return data
- 
-def model_info(model_path):
-    config_file = os.path.join(model_path, "configuration.csv")
-    with open(config_file, "r", newline='') as config:
-        reader = csv.DictReader(config)
-        row = next(iter(reader))
-        f_type, channels, out_classes = row["Feature type"], row["Input channels"], row["Output classes"]
-        
-        channels = ast.literal_eval(channels)
-        out_classes = int(out_classes)
-        
-    return f_type, channels, out_classes
  
 def FullTest(model_path, test_path, 
              label_path = None,

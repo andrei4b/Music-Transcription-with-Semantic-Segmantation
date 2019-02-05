@@ -34,7 +34,7 @@ def ProcessLabel(gt_path, t_unit=0.02, length=None, pitch_width=352, base=88):
 
     for i in range(1, len(lines)):
         if(len(lines[i].split("\t")) != 3):
-            continue
+            print("PROBLEM")
         onset, offset, midi = lines[i].split("\t")
         onset, offset, midi = float(onset), float(offset), int(midi[:midi.find("\n")])
         
@@ -66,12 +66,14 @@ if __name__ == "__main__":
     '''
         example for testing 
     '''
-    ff_name = "./MapsDataset/ENSTDkCl/MUS/MAPS_MUS-bk_xmas4_ENSTDkCl.txt"
+    ff_name = "./maps/AkPnBcht/MUS/MAPS_MUS-alb_se3_AkPnBcht.txt"
     
     label = ProcessLabel(ff_name)
 
-    plt.imshow(label.transpose(), aspect='auto', origin='lower')
+    plt.imshow(label.transpose(), aspect='15', origin='lower')
+    plt.savefig("image.png", bbox_inches='tight', dpi=200)
     plt.show()
+    
 
 
 

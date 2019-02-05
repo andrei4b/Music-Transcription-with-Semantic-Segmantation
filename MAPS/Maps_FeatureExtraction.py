@@ -11,9 +11,9 @@ from tqdm import trange
 
 
 def list_wavs(path):
-	'''
-		receive a path/a list of paths, and return a list with all wavs from this location(s)
-	'''
+    '''
+    receive a path/a list of paths, and return a list with all wavs from this location(s)
+    '''
     if type(path) == str:
         return glob.glob(os.path.join(path, "*.wav"))
     
@@ -26,14 +26,13 @@ def list_wavs(path):
     return files
 
 def Manage_Process_Label(files, save_path, num_per_file, t_unit=0.02):
-	'''
+    '''
 		- make a list with txt file paths
 		- iters = number of data files 
 		- sub-files = sublist of txts
 		- for each file from the sublist, call ProcessLabel, 
-		  add the result to labels and create a pickle file for each txt sublist  
-	'''
-    
+        add the result to labels and create a pickle file for each txt sublist  
+    '''
     files = [ff.replace(".wav", ".txt") for ff in files]
     
     iters = np.ceil(len(files)/num_per_file).astype('int')
@@ -50,14 +49,14 @@ def Manage_Process_Label(files, save_path, num_per_file, t_unit=0.02):
         f_name = os.path.join(save_path, f_name)
 
         pickle.dump(labels, open(f_name, 'wb'), pickle.HIGHEST_PROTOCOL)
-    
+
 def main(args):
-	'''
-		- use just MUS folders?
-		- train_audios, test_audios = wav files lists
-		- call Manage_Feature_Process (from MusicNet folder) and Manage_Process_Label to generate features needed 
-		  for training and testing		
-	'''
+    """
+    - use just MUS folders? Only 6 train folders?
+    - train_audios, test_audios = wav files lists
+    - call Manage_Feature_Process (from MusicNet folder) and Manage_Process_Label to generate
+    features needed for training and testing
+    """
     train_folders = ["AkPnBcht", "AkPnBsdf", "AkPnCGdD", "AkPnStgb", "SptkBGAm", "SptkBGCl"]
     test_folders  = ["ENSTDkAm", "ENSTDkCl"]
     train_folders = [os.path.join(args.MAPS_path, ff, "MUS") for ff in train_folders]
@@ -86,14 +85,16 @@ def main(args):
     train_save_name = "train_" + str(args.train_num_per_file)
     test_save_name  = "test_" + str(args.test_num_per_file)
     
+    
     # Process training features
     Manage_Feature_Process(train_audios, train_save_path, train_save_name, num_per_file=args.train_num_per_file, harmonic=not args.no_harmonic)
+    '''
     Manage_Process_Label(train_audios, args.train_save_path, args.train_num_per_file)
     
     # Process testing features
     Manage_Feature_Process(test_audios, test_save_path, test_save_name, num_per_file=args.test_num_per_file, harmonic=not args.no_harmonic)
     Manage_Process_Label(test_audios, args.test_save_path, args.test_num_per_file)
-
+    '''
 
 if __name__ == "__main__":
     
