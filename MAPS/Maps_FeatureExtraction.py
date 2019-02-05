@@ -5,6 +5,9 @@ import glob, os
 import pickle
 from FeatureExtraction import Manage_Feature_Process
 from MAPS_ProcessLabel import ProcessLabel
+import argparse
+import numpy as np
+from tqdm import trange
 
 
 def list_wavs(path):
@@ -61,7 +64,17 @@ def main(args):
     test_folders  = [os.path.join(args.MAPS_path, ff, "MUS") for ff in test_folders]
     
     train_audios = list_wavs(train_folders)
+    train_audios = [item for sublist in train_audios for item in sublist] #flatten list
+    # for ff in train_audios:
+    # 	print(ff)
+
     test_audios  = list_wavs(test_folders)
+    test_audios = [item for sublist in test_audios for item in sublist] #flatten list
+    # for ff in test_audios:
+    # 	print(ff)
+
+    if args.save_path is None:
+        args.save_path = os.path.join(args.MAPS_path, "./features")
     
     train_save_path = os.path.join(args.save_path, "train")
     if not os.path.exists(train_save_path):

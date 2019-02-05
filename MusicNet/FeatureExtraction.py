@@ -107,8 +107,9 @@ def Manage_Feature_Process(audio_path,
     '''
     
     
-    song_list = os.listdir(audio_path)
-    song_list = [os.path.join(audio_path, ss) for ss in song_list]
+    #song_list = os.listdir(audio_path) #for MusicNet
+    #song_list = [os.path.join(audio_path, ss) for ss in song_list] #for MusicNet
+    song_list = audio_path
     if permutate:
         song_list = np.random.permutation(song_list)
     
