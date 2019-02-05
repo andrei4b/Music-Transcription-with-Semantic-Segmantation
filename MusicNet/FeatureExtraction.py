@@ -1,4 +1,3 @@
-
 import os
 import csv
 import h5py
@@ -14,6 +13,10 @@ def fetch_harmonic(data, cenf, ith_har,
                    start_freq=27.5, 
                    num_per_octave=48, 
                    is_reverse=False):
+    '''
+        - no idea what this is
+        - used only if using harmonic features
+    '''
     
     ith_har += 1
     if ith_har != 0 and is_reverse:
@@ -39,6 +42,12 @@ def make_dataset_audio(dataset_name,
                        fmt=".hdf",
                        harmonic=False,
                        num_harmonic=0):
+    '''
+        - extract features for each wav in the passed sublist and store the features in out[] variable
+        - transpose out[] in a certain way...? and store it in piece variable
+        - generate harmonics for spec and ceps
+        - store features from all songs in this sublist in a single hdf file
+    '''
     
     
     if harmonic:
@@ -46,9 +55,7 @@ def make_dataset_audio(dataset_name,
     else:
         freq_range = [27.5, 4487.0]
     
-    hdf_out = h5py.File(dataset_name+fmt, "w")
-
-    
+    hdf_out = h5py.File(dataset_name+fmt, "w")    
     
     for idx, song in enumerate(song_list):
         print("Extracting({}/{}): {}".format(idx+1, len(song_list), song))
@@ -93,6 +100,11 @@ def Manage_Feature_Process(audio_path,
                            num_per_file = 40,
                            harmonic     = True,
                            permutate    = False):        
+    '''
+        - create SongList.csv
+        - files_num = number of hdf files
+        - make dataset for each sublist
+    '''
     
     
     song_list = os.listdir(audio_path)
@@ -113,7 +125,7 @@ def Manage_Feature_Process(audio_path,
             make_dataset_audio(sub_name, sub_list, fmt, harmonic=harmonic, num_harmonic=5)    
             
             
-            # write record to file
+            # write record to csv file
             for id in sub_list:
                 f_name = save_name+"_"+str(i+1)
                 id = id[(id.rfind("/")+1):]

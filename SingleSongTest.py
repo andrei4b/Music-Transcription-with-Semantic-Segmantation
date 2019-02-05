@@ -111,11 +111,17 @@ def main(args):
     pred = predict(feature, model,
                    channels=channels,
                    instruments=out_class-1)
+    
+
+    #DEBUG
+    print("pred:")
+    print(pred)
 
     for i in range(pred.shape[2]):
         pred[:,:88,i] = peak_picking(pred[:,:,i])
     pred = pred[:,:88]
-
+    print("pred:")
+    print(pred)
     
     # Print figure
     base_path = args.input_audio[:args.input_audio.rfind("/")]

@@ -202,6 +202,25 @@ def plot_figures(pred, label, save_name,
             threshold = [threshold for i in range(len(spec_inst))]
         else:
             assert(len(threshold) == len(spec_inst))
+
+        #DEBUG
+        print("spec_inst:")
+        print(spec_inst)
+        print("pred:")
+        print(pred)
+        pred1 = []
+        pred1.append(pred)
+        pred = np.array(pred1)
+        label1 = []
+        label1.append(label)
+        label = np.array(label1)
+        print("spec_inst:")
+        print(spec_inst)
+        print("pred:")
+        print(pred)
+        print("label:")
+        print(label)
+
             
         for i in range(len(spec_inst)):
             idx = spec_inst[i]
@@ -220,6 +239,8 @@ def plot_figures(pred, label, save_name,
     for i in range(1, len(data)):
         tmp = np.dstack((tmp, data[i]))
     data = tmp
+    print("data:")
+    print(data)
 
     ## Pring out piano rolls batch by batch
     Round = np.ceil(data.shape[2]/max_row).astype('int')
