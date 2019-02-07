@@ -34,7 +34,8 @@ def ProcessLabel(gt_path, t_unit=0.02, length=None, pitch_width=352, base=88):
 
     for i in range(1, len(lines)):
         if(len(lines[i].split("\t")) != 3):
-            print("PROBLEM")
+            print("Newline")
+            continue
         onset, offset, midi = lines[i].split("\t")
         onset, offset, midi = float(onset), float(offset), int(midi[:midi.find("\n")])
         

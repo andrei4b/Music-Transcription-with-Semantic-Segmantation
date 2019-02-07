@@ -88,13 +88,11 @@ def main(args):
     
     # Process training features
     Manage_Feature_Process(train_audios, train_save_path, train_save_name, num_per_file=args.train_num_per_file, harmonic=not args.no_harmonic)
-    '''
-    Manage_Process_Label(train_audios, args.train_save_path, args.train_num_per_file)
+    Manage_Process_Label(train_audios, train_save_path, args.train_num_per_file)
     
     # Process testing features
     Manage_Feature_Process(test_audios, test_save_path, test_save_name, num_per_file=args.test_num_per_file, harmonic=not args.no_harmonic)
-    Manage_Process_Label(test_audios, args.test_save_path, args.test_num_per_file)
-    '''
+    Manage_Process_Label(test_audios, test_save_path, args.test_num_per_file)
 
 if __name__ == "__main__":
     
