@@ -129,7 +129,7 @@ def load_files(paths, use_ram=True):
 def FullTest(model_path, test_path, 
              label_path = None,
              pred_save_path="./predictions",
-             use_ram = True,
+             use_ram = False,
              MAX_FRAME=1800):
     
     
