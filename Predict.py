@@ -224,7 +224,7 @@ if __name__ == "__main__":
                         type=str, default="./predictions")
     parser.add_argument("--use-ram",
                         help="Wether to load all the data into ram. (default %(default)s)",
-                        type=bool, default=True)
+                        type=bool, default=False)
     args = parser.parse_args()
     
 
