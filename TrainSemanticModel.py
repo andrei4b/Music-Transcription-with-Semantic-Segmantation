@@ -13,8 +13,7 @@ from keras import callbacks
 
 def arguments_post_process(args):
     
-    
-    # path to dataset
+    # choose dataset type and set path to dataset
     if args.MusicNet_feature_path is not None:
         base_path = args.MusicNet_feature_path
         dataset_type = "MusicNet"
@@ -23,7 +22,6 @@ def arguments_post_process(args):
         dataset_type = "MAPS"
     else:
         assert(False), "Please at least assign one of the flags: --MAPS-feature-path or --MusicNet-feature-path"
-
 
     # Continue to train on a pre-trained model
     if args.input_model is not None:
@@ -95,8 +93,6 @@ def arguments_post_process(args):
 
     dataset_path = [os.path.join(base_path, dp) for dp in dataset_path] 
     label_path   = [os.path.join(base_path, lp) for lp in label_path]
-    
-        
 
     return model, dataset_path, label_path, dataset_type
 
@@ -166,7 +162,6 @@ def main():
 
     # Arguments setting
     model, dataset_path, label_path, dataset_type = arguments_post_process(args)
-
     
     
     # create callbacks
