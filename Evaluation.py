@@ -196,7 +196,7 @@ def threshold_finding(preds, labels, onsets=False, mix=False, spec_inst=0):
         labels = [merge(l) for l in labels]
     else:
         preds = [p[:,:,spec_inst] for p in preds]
-        labels = [l[:,:,spec_inst] for l in labels]
+        #labels = [l[:,:,spec_inst] for l in labels]
     MAX = max([np.max(p) for p in preds])
     
 
@@ -280,9 +280,9 @@ if __name__ == "__main__":
         t_labels = [merge(l) for l in t_labels]
     else:
         t_preds = [p[:,:,args.spec_instrument] for p in t_preds]
-        t_labels = [l[:,:,args.spec_instrument] for l in t_labels]
+        #t_labels = [l[:,:,args.spec_instrument] for l in t_labels]
 
-    evaluate(t_preds, t_labels, threshold=0.373, onsets=onsets) #threshold=best['th']
+    evaluate(t_preds, t_labels, threshold=0.36, onsets=onsets) #threshold=best['th']
     #print("Result of evalution on " + MusicNet_Instruments[args.spec_instrument])
     #print("Best setting: ", best, "Searched thresholds: ", thresholds)
 

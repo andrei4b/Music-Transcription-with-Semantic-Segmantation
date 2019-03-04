@@ -139,7 +139,7 @@ def quantization(pred, label, threshold):
 def PLOT(data, save_name, plot_range, titles=None, color_map="terrain"):
     plt.clf()
     
-    fig, axes = plt.subplots(nrows=data.shape[2])
+    fig, axes = plt.subplots(nrows=1) #nrows=data.shape[2] #changed by me
     if type(axes) != list:
         axes = [axes]
     
@@ -202,26 +202,20 @@ def plot_figures(pred, label, save_name,
             threshold = [threshold for i in range(len(spec_inst))]
         else:
             assert(len(threshold) == len(spec_inst))
-
-        #DEBUG
-        print("spec_inst:")
-        print(spec_inst)
-        print("pred:")
-        print(pred)
-        pred1 = []
-        pred1.append(pred)
-        pred = np.array(pred1)
-        label1 = []
-        label1.append(label)
-        label = np.array(label1)
-        print("spec_inst:")
-        print(spec_inst)
-        print("pred:")
-        print(pred)
-        print("label:")
-        print(label)
-
-            
+        """
+            Adapted for maps
+        """
+        pp = pred
+        ll = label
+        th = threshold[0]
+        
+        pred, label = quantization(pp, ll, th)
+    
+    data = []
+    tmp = np.dstack((pred, label))
+    data.append(tmp)
+        
+    """           
         for i in range(len(spec_inst)):
             idx = spec_inst[i]
             pp = pred[:,:,idx]
@@ -235,6 +229,7 @@ def plot_figures(pred, label, save_name,
         idx = spec_inst[i]
         tmp = np.dstack((pred[:,:,idx], label[:,:,idx]))
         data.append(tmp)
+    """
     tmp = data[0]
     for i in range(1, len(data)):
         tmp = np.dstack((tmp, data[i]))
@@ -341,17 +336,3 @@ if __name__ == "__main__":
                      threshold = args.threshold)
         
         del data[0], label[0]
-        
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
