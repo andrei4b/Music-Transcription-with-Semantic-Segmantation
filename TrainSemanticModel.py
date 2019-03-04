@@ -13,8 +13,7 @@ from keras import callbacks
 
 def arguments_post_process(args):
     
-    
-    # path to dataset
+    # choose dataset type and set path to dataset
     if args.MusicNet_feature_path is not None:
         base_path = args.MusicNet_feature_path
         dataset_type = "MusicNet"
@@ -23,7 +22,6 @@ def arguments_post_process(args):
         dataset_type = "MAPS"
     else:
         assert(False), "Please at least assign one of the flags: --MAPS-feature-path or --MusicNet-feature-path"
-
 
     # Continue to train on a pre-trained model
     if args.input_model is not None:
@@ -42,13 +40,13 @@ def arguments_post_process(args):
     else:
         # setup output model name
         if " + " in args.output_model_name:
-            args.output_model_name = args.output_model_name[0:13] + str(args.channel)
+            args.output_model_name = args.output_model_name[0:13] + str(args.channels)
         
         # Number of channels to use
         ch_num = len(args.channels)
 
         # Train on MusicNet
-        if feature_type == "MusicNet":
+        if dataset_type == "MusicNet":
             # Input parameters
             if args.no_harmonic == True:
                 ch_num = 2
@@ -64,7 +62,7 @@ def arguments_post_process(args):
             else:
                 out_classes = 12
         # Train on MAPS
-        elif feature_type == "MAPS":
+        elif dataset_type == "MAPS":
             base_path = args.MAPS_feature_path
             out_classes = 2
             dataset_type = "MAPS"
@@ -76,9 +74,10 @@ def arguments_post_process(args):
                     out_class=out_classes)
 
         # Save model and configurations
-        if not os.path.exists(path):
-            os.makedirs(path)
-        save_model(model, path, feature_type=feature_type, input_channels=args.channels, output_classes=out_classes)
+        save_path = os.path.join("model", args.output_model_name)
+        if not os.path.exists(save_path):
+            os.makedirs(save_path)
+        save_model(model, save_path, feature_type=feature_type, input_channels=args.channels, output_classes=out_classes)
 
     model.compile(optimizer="adam", loss={'prediction': sparse_loss}, metrics=['accuracy'])
 
@@ -95,8 +94,6 @@ def arguments_post_process(args):
 
     dataset_path = [os.path.join(base_path, dp) for dp in dataset_path] 
     label_path   = [os.path.join(base_path, lp) for lp in label_path]
-    
-        
 
     return model, dataset_path, label_path, dataset_type
 
@@ -166,7 +163,6 @@ def main():
 
     # Arguments setting
     model, dataset_path, label_path, dataset_type = arguments_post_process(args)
-
     
     
     # create callbacks
