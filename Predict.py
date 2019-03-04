@@ -87,6 +87,9 @@ def predict(feature,
     return pred
 
 def parse_path(path, label=False):
+    """
+    get list of files contained in directory
+    """
     data = []
     if os.path.isdir(path):
         files = os.listdir(path)
@@ -104,6 +107,9 @@ def parse_path(path, label=False):
     return data
  
 def load_files(paths, use_ram=True):
+    """
+    take list of files and load them into memory
+    """
     data = []
     for path in paths:
         # Get extension
@@ -131,7 +137,12 @@ def FullTest(model_path, test_path,
              pred_save_path="./predictions",
              use_ram = True,
              MAX_FRAME=1800):
-    
+    """
+    load features and labels
+    load model
+    check config
+    predict
+    """
     
     
     # Load files
@@ -224,7 +235,7 @@ if __name__ == "__main__":
                         type=str, default="./predictions")
     parser.add_argument("--use-ram",
                         help="Wether to load all the data into ram. (default %(default)s)",
-                        type=bool, default=True)
+                        type=bool, default=False)
     args = parser.parse_args()
     
 
