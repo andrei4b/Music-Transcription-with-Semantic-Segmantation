@@ -127,6 +127,9 @@ def gen_frame_info(data,
     return np.array(time_lst), freq_lst
 
 def peak_picking(data, base=88):
+	"""
+	?get max of predictions from different channels
+	"""
     assert(len(data.shape)==2)
     assert(data.shape[1]%base == 0)
 
