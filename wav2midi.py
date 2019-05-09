@@ -60,7 +60,7 @@ def main(args):
         feature = np.transpose(feature, axes=(2, 1, 0))
     #load model
     model = load_model(args.model_path)
-    
+            
     print("Predicting...")
     pred = predict(feature, model, channels=channels, instruments=out_class-1)
     pred = pred[:,:,0]
@@ -84,7 +84,7 @@ if __name__ == "__main__":
                         type=str)
     parser.add_argument("-o", "--output-mid-name",
                         help="Name of transcribed .mid file of piano roll to save.",
-                        type=str, default="voila")
+                        type=str, default="voila.mid")
     parser.add_argument("-p", "--program",
                         help="What sound to use",
                         type=int, default=0)

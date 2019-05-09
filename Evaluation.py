@@ -127,9 +127,6 @@ def gen_frame_info(data,
     return np.array(time_lst), freq_lst
 
 def peak_picking(data, base=88):
-	"""
-	?get max of predictions from different channels
-	"""
     assert(len(data.shape)==2)
     assert(data.shape[1]%base == 0)
 
@@ -160,7 +157,7 @@ def evaluate(preds,
         accuracy = 0
         if onsets:
             est_interval, est_hz = gen_onsets_info(preds[i],  threshold, t_unit=t_unit)
-            ref_interval, ref_hz = gen_onsets_info(labels[i], threshold, t_unit=t_unit)
+            ref_interval, ref_hz = gen_onsets_info(labels[i], threshold, t_unit=t_unit)                    
             out = mir_eval.transcription.precision_recall_f1_overlap(ref_interval, ref_hz, 
                                                                      est_interval, est_hz, 
                                                                      offset_ratio=None)
@@ -283,7 +280,7 @@ if __name__ == "__main__":
         t_labels = [merge(l) for l in t_labels]
     else:
         t_preds = [p[:,:,args.spec_instrument] for p in t_preds]
-        t_labels = [l[:,:,args.spec_instrument] for l in t_labels]
+        #t_labels = [l[:,:,args.spec_instrument] for l in t_labels]
 
     evaluate(t_preds, t_labels, threshold=0.373, onsets=onsets) #threshold=best['th']
     #print("Result of evalution on " + MusicNet_Instruments[args.spec_instrument])
