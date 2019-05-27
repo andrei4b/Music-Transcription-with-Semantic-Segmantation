@@ -33,7 +33,7 @@ def Manage_Process_Label(files, save_path, num_per_file, t_unit=0.02):
 		- for each file from the sublist, call ProcessLabel, 
         add the result to labels and create a pickle file for each txt sublist  
     '''
-    files = [ff.replace(".wav", ".midi") for ff in files]
+    files = [ff.replace(".wav", ".txt") for ff in files]
     
     iters = np.ceil(len(files)/num_per_file).astype('int')
     for i in trange(iters):
@@ -88,6 +88,7 @@ def main(args):
     
     
     # Process training features
+    
     Manage_Feature_Process(train_audios, train_save_path, train_save_name, num_per_file=args.train_num_per_file, harmonic=not args.no_harmonic)
     #Manage_Process_Label(train_audios, train_save_path, args.train_num_per_file)
     

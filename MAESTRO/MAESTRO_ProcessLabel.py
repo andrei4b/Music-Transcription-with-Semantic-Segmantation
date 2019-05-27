@@ -37,7 +37,7 @@ def ProcessLabel(gt_path, t_unit=0.02, length=None, pitch_width=352, base=88):
             print("Newline")
             continue
         onset, offset, midi, velocity = lines[i].split("\t")
-        onset, offset, midi, velocity = float(onset), float(offset), int(midi), int(velocity[:velocity.find("\n")])
+        onset, offset, midi, velocity = float(onset), float(offset), int(float(midi)), int(float(velocity[:velocity.find("\n")]))
         
         start_frm, end_frm = round(onset/t_unit), round(offset/t_unit)
         pitch = midi - base_note
