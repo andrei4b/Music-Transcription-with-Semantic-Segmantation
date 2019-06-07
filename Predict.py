@@ -1,4 +1,4 @@
-﻿import os
+import os
 import ast
 import csv
 import h5py
