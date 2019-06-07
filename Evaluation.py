@@ -250,6 +250,9 @@ if __name__ == "__main__":
                         help="Merge channels into single channel. Keep the maximum value among all channels. If this parameter is \
                               given, the parameter, --spec-instrument, can be ignored.",
                         action="store_true")
+    parser.add_argument("--threshold",
+                        help="Threshold value.",
+                        type=float)
     
     args = parser.parse_args()
 
@@ -282,7 +285,7 @@ if __name__ == "__main__":
         t_preds = [p[:,:,args.spec_instrument] for p in t_preds]
         #t_labels = [l[:,:,args.spec_instrument] for l in t_labels]
 
-    evaluate(t_preds, t_labels, threshold=0.36, onsets=onsets) #threshold=best['th']
+    evaluate(t_preds, t_labels, threshold=args.threshold, onsets=onsets) #threshold=best['th']
     #print("Result of evalution on " + MusicNet_Instruments[args.spec_instrument])
     #print("Best setting: ", best, "Searched thresholds: ", thresholds)
 

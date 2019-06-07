@@ -57,7 +57,8 @@ def main(args):
     - call Manage_Feature_Process (from MusicNet folder) and Manage_Process_Label to generate
     features needed for training and testing
     """
-    train_folders = ["AkPnBcht", "AkPnBsdf", "AkPnCGdD", "AkPnStgb", "SptkBGAm", "SptkBGCl"]
+    #train_folders = ["AkPnBcht", "AkPnBsdf", "AkPnCGdD", "AkPnStgb", "SptkBGAm", "SptkBGCl"]
+    train_folders = ["StbgTGd2"]
     test_folders  = ["ENSTDkAm", "ENSTDkCl"]
     train_folders = [os.path.join(args.MAPS_path, ff, "MUS") for ff in train_folders]
     test_folders  = [os.path.join(args.MAPS_path, ff, "MUS") for ff in test_folders]
@@ -91,8 +92,8 @@ def main(args):
     Manage_Process_Label(train_audios, train_save_path, args.train_num_per_file)
     
     # Process testing features
-    Manage_Feature_Process(test_audios, test_save_path, test_save_name, num_per_file=args.test_num_per_file, harmonic=not args.no_harmonic)
-    Manage_Process_Label(test_audios, test_save_path, args.test_num_per_file)
+    #Manage_Feature_Process(test_audios, test_save_path, test_save_name, num_per_file=args.test_num_per_file, harmonic=not args.no_harmonic)
+    #Manage_Process_Label(test_audios, test_save_path, args.test_num_per_file)
 
 if __name__ == "__main__":
     

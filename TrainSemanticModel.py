@@ -166,7 +166,7 @@ def main():
     
     
     # create callbacks
-    save_path = os.path.join("model", args.output_model_name)
+    save_path = args.output_model_name
     earlystop   = callbacks.EarlyStopping(monitor="val_acc", patience=10)
     checkpoint  = callbacks.ModelCheckpoint(save_path+"/weights.h5", monitor="val_acc", 
                                             save_best_only=True, save_weights_only=True)
