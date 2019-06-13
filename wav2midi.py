@@ -1,5 +1,3 @@
-"""wav to midi for piano music
-"""
 import argparse
 import os
 import numpy as np
@@ -45,13 +43,13 @@ def piano_roll_to_pretty_midi(piano_roll, fs=50, program=0):
     pm.instruments.append(instrument)
     return pm
 
-def main(args):
-    assert(os.path.isfile(args.wav_file)), "The given path is not a file!. Please check your input again."
+def wav2midi(wav_file, model_path, program, threshold):
+    assert(os.path.isfile(wav_file)), "The given path is not a file!. Please check your input again."
     
     print("Extracting features...")
-    Z, tfrL0, tfrLF, tfrLQ, t, cenf, f = feature_extraction(args.wav_file)
+    Z, tfrL0, tfrLF, tfrLQ, t, cenf, f = feature_extraction(wav_file)
     #get model configuration and prepare features for inference
-    feature_type, channels, out_class = model_info(args.model_path)
+    feature_type, channels, out_class = model_info(model_path)
     if feature_type == "HCFP":
         pass
     else:
@@ -59,19 +57,20 @@ def main(args):
         feature = np.array([Z, tfrL0, tfrLF, tfrLQ])
         feature = np.transpose(feature, axes=(2, 1, 0))
     #load model
-    model = load_model(args.model_path)
+    model = load_model(model_path)
             
     print("Predicting...")
     pred = predict(feature, model, channels=channels, instruments=out_class-1)
     pred = pred[:,:,0]
     pred = peak_picking(pred) if pred.shape[1] > 88 else pred
-    pred[pred < args.threshold] = 0
+    pred[pred < threshold] = 0
     pred[pred != 0] = 1
     
     print("Saving...")
-    pm = piano_roll_to_pretty_midi(pred.T, fs=50, program=args.program)
+    pm = piano_roll_to_pretty_midi(pred.T, fs=50, program=program)
     pm.remove_invalid_notes()
-    pm.write(args.output_mid_name)
+    output_mid_name = wav_file[:-4] + ".mid"
+    pm.write(output_mid_name) 
 
 if __name__ == "__main__":
     
@@ -82,9 +81,6 @@ if __name__ == "__main__":
     parser.add_argument("-m", "--model-path", 
                         help="Path to the pre-trained model.",
                         type=str)
-    parser.add_argument("-o", "--output-mid-name",
-                        help="Name of transcribed .mid file of piano roll to save.",
-                        type=str, default="voila.mid")
     parser.add_argument("-p", "--program",
                         help="What sound to use",
                         type=int, default=0)
@@ -93,4 +89,4 @@ if __name__ == "__main__":
                         type=float, default=0.36)
     args = parser.parse_args()
     
-    main(args)
+    wav2midi(args.wav_file, args.model_path, args.program, args.threshold)
