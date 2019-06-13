@@ -75,9 +75,9 @@ def wav2midi(wav_file, model_path, program, threshold):
 if __name__ == "__main__":
     
     parser = argparse.ArgumentParser(description="Transcribe on the given audio.")
-    parser.add_argument("-i", "--wav-file",
+    parser.add_argument("-i", "--wav-files",
                         help="Path to the input audio you want to transcribe",
-                        type=str)
+                        type=str, nargs="+")
     parser.add_argument("-m", "--model-path", 
                         help="Path to the pre-trained model.",
                         type=str)
@@ -89,4 +89,5 @@ if __name__ == "__main__":
                         type=float, default=0.36)
     args = parser.parse_args()
     
-    wav2midi(args.wav_file, args.model_path, args.program, args.threshold)
+    for file in args.wav_files:
+        wav2midi(file, args.model_path, args.program, args.threshold)

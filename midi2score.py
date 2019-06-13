@@ -1,39 +1,20 @@
-# Unroll method
-#from unroll import midi2keystrikes
-#ks = midi2keystrikes('voila.mid')
-#ks.transcribe('score.ly', quarter_durations = [50,100,0.02])
-
-# Sigliati version
-
-import subprocess
+from unroll.MIDI import midi2keystrikes
 import argparse
-from music21 import *
-import sys
-from xml.etree import ElementTree
-from CompleteTranscription.CompleteTranscription import complete_transcription
-
-musescore_path = "C:\Program Files (x86)\MuseScore 2\\bin\MuseScore.exe"
 
 def midi2score(midi_file):
-    music21score = complete_transcription(midi_file)
-    SX = musicxml.m21ToXml.ScoreExporter(music21score)
-    xml_score = SX.parse()
-    xml_score_string = ElementTree.tostring(xml_score, encoding='unicode')
-    xml_file = midi_file[:-4] + '.xml'
-    
-    f = open(xml_file, "w")
-    f.write(xml_score_string)
-    f.close()
-    
-    subprocess.call([musescore_path, xml_file])
+    ks = midi2keystrikes(midi_file)
+    lilyfile = midi_file[:-4] + ".mid"
+    ks.transcribe(lilyfile, quarter_durations=[200,250,0.2])    
 
 def main():
-    parser = argparse.ArgumentParser(description="Convert MIDI to musicXML and open it in MuseScore.")
-    parser.add_argument("--midi-file",
+    parser = argparse.ArgumentParser(description="Convert MIDI to lilypond file")
+    parser.add_argument("--midi-files",
                         help="Path to midi file.",
-                        type=str)
+                        type=str, nargs="+")
     args = parser.parse_args()
-    midi2score(args.midi_file)    
+    
+    for file in midi_files:
+        midi2score(file)    
 
 if __name__ == '__main__':
     main()

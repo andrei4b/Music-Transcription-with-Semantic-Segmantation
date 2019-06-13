@@ -1,18 +1,19 @@
 import argparse
 from wav2midi import wav2midi
-from midi2lily import midi2score
+from midi2score import midi2score
 
 def main(args):
-    wav2midi(args.wav_file, args.model_path, args.program, args.threshold)
+    for file in args.wav_files:
+        wav2midi(file, args.model_path, args.program, args.threshold)
     
-    midi_file = args.wav_file[:-4] + ".mid"
-    midi2score(midi_file)        
+        midi_file = file[:-4] + ".mid"
+        midi2score(midi_file)        
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description="Transcribe on the given audio.")
-    parser.add_argument("-i", "--wav-file",
+    parser.add_argument("-i", "--wav-files",
                         help="Path to the input audio you want to transcribe",
-                        type=str)
+                        type=str, nargs="+")
     parser.add_argument("-m", "--model-path", 
                         help="Path to the pre-trained model.",
                         type=str)
