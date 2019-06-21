@@ -3,7 +3,7 @@ import argparse
 
 def midi2score(midi_file):
     ks = midi2keystrikes(midi_file)
-    lilyfile = midi_file[:-4] + ".mid"
+    lilyfile = midi_file[:-4] + ".ly"
     ks.transcribe(lilyfile, quarter_durations=[200,250,0.2])    
 
 def main():
@@ -13,7 +13,7 @@ def main():
                         type=str, nargs="+")
     args = parser.parse_args()
     
-    for file in midi_files:
+    for file in args.midi_files:
         midi2score(file)    
 
 if __name__ == '__main__':

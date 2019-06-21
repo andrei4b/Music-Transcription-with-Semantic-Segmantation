@@ -15,7 +15,7 @@ def generator_audio2(batch_size,
                      phase='train',
                      percentage_train=0.8,
                      channels=None,
-                     dataset_type="MusicNet",
+                     dataset_type="MAPS",
                      use_ram=False,
                      mpe_only=False):
 
@@ -53,10 +53,7 @@ def generator_audio2(batch_size,
         feature_12 = np.zeros((timesteps, 128, 1))
 
         label = Y[chorale_index][time_index: time_index+timesteps]
-        if dataset_type=="MusicNet":
-            label = label_conversion(label, 384, timesteps, mpe=mpe_only)
-        else:
-            label = to_categorical(label, num_classes=2) 
+        label = to_categorical(label, num_classes=2) 
 
         features_48.append(feature_48)
         features_12.append(feature_12)
@@ -114,7 +111,7 @@ def generator_audio(batch_size,
             X_48[a] = new_x_48
             
             new_y = np.array(Y[a]) # Dim: frames x roll
-            Y[a] = padding(new_y, 384, timesteps, muti_instrument=(instruments>1))
+            Y[a] = padding(new_y, 384, timesteps, muti_instrument=False)
 
     features_48 = []
     features_12 = []

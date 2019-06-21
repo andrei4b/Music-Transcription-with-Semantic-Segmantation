@@ -185,35 +185,6 @@ def evaluate(preds,
     
     return f/num
 
-def merge(data):
-    if len(data.shape) == 3:
-        return np.nanmax(data, axis=2)
-    return data
-
-def threshold_finding(preds, labels, onsets=False, mix=False, spec_inst=0):
-    if mix:
-        preds = [merge(p) for p in preds]
-        labels = [merge(l) for l in labels]
-    else:
-        preds = [p[:,:,spec_inst] for p in preds]
-        #labels = [l[:,:,spec_inst] for l in labels]
-    MAX = max([np.max(p) for p in preds])
-    
-
-    th = [i/1000 for i in range(round(MAX*0.4*1000).astype('int'), round(MAX*0.9*1000).astype('int'), 5)]
-
-    best = {'f': 0, 'th': -1}
-    print(len(th), th)
-    for idx, t in enumerate(th):
-        print("{}/{}".format(idx+1, len(th)))
-        print("Threshold: ", t)
-        f = evaluate(preds, labels, threshold=t, onsets=onsets)
-        if f > best['f']:
-            best['f'] = f
-            best['th'] = t
-
-    return best, th
-
 def load_prediction(path, pred_name="pred.hdf", label_name="label.hdf"):
     pred_file = os.path.join(path, pred_name)
     label_file = os.path.join(path, label_name)
@@ -243,13 +214,6 @@ if __name__ == "__main__":
     parser.add_argument("--test-pred-path",
                         help="Path to directory of prediction files of test set.",
                         type=str)
-    parser.add_argument("--spec-instrument",
-                        help="To evaluate on the specific channel. This option is for MusicNet. (default %(default)d)",
-                        type=int, default=0)
-    parser.add_argument("--merge-channels",
-                        help="Merge channels into single channel. Keep the maximum value among all channels. If this parameter is \
-                              given, the parameter, --spec-instrument, can be ignored.",
-                        action="store_true")
     parser.add_argument("--threshold",
                         help="Threshold value.",
                         type=float)
@@ -263,31 +227,14 @@ if __name__ == "__main__":
     
     validate = False #changed by me
     onsets = False
-    
-
-    # Validation
-    if validate:
-        print("Loading validation predictions: ", args.val_pred_path)
-        v_preds, v_labels = load_prediction(args.val_pred_path)
-        best, thresholds = threshold_finding(v_preds, v_labels, onsets, args.merge_channels, args.spec_instrument)
-        print("Best setting: ", best, "Searched thresholds: ", thresholds)
-
-        del v_preds, v_labels
 
     # Test
     print("Loading testing predictions: ", args.test_pred_path)
     t_preds, t_labels = load_prediction(args.test_pred_path)
     
-    if args.merge_channels:
-        t_preds = [merge(p) for p in t_preds]
-        t_labels = [merge(l) for l in t_labels]
-    else:
-        t_preds = [p[:,:,args.spec_instrument] for p in t_preds]
-        #t_labels = [l[:,:,args.spec_instrument] for l in t_labels]
+    t_preds = [p[:,:,0] for p in t_preds]
 
-    evaluate(t_preds, t_labels, threshold=args.threshold, onsets=onsets) #threshold=best['th']
-    #print("Result of evalution on " + MusicNet_Instruments[args.spec_instrument])
-    #print("Best setting: ", best, "Searched thresholds: ", thresholds)
+    evaluate(t_preds, t_labels, threshold=args.threshold, onsets=onsets) 
 
             
             

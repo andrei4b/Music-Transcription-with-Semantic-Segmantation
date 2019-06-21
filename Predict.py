@@ -168,13 +168,6 @@ def FullTest(model_path, test_path,
     # Validate on model/feature configurations
     f_type, channels, out_classes = model_info(model_path)
     
-    if f_type=="HCFP" and features[0].shape[2] < 12:
-        assert(False), "The model uses HCFP as input feature, but loaded features are not."
-    if f_type=="CFP" and features[0].shape[2] == 12:
-        assert(len(channels)==2 and 1 in channels and 3 in channels), """The 
-             The given feature are HCFP, but the model uses more feature types.
-             Model input feature types: """ + str(channels) + " ({0: Z, 1: Spec, 2: GCoS, 3: Ceps})"
-        channels = [0, 6]
     mpe = False
     if out_classes==2:
         mpe = True

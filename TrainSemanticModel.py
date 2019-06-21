@@ -14,14 +14,11 @@ from keras import callbacks
 def arguments_post_process(args):
     
     # choose dataset type and set path to dataset
-    if args.MusicNet_feature_path is not None:
-        base_path = args.MusicNet_feature_path
-        dataset_type = "MusicNet"
-    elif args.MAPS_feature_path is not None:
+    if args.MAPS_feature_path is not None:
         base_path = args.MAPS_feature_path
         dataset_type = "MAPS"
     else:
-        assert(False), "Please at least assign one of the flags: --MAPS-feature-path or --MusicNet-feature-path"
+        assert(False), "Please assign --MAPS-feature-path"
 
     # Continue to train on a pre-trained model
     if args.input_model is not None:
@@ -45,24 +42,7 @@ def arguments_post_process(args):
         # Number of channels to use
         ch_num = len(args.channels)
 
-        # Train on MusicNet
-        if dataset_type == "MusicNet":
-            # Input parameters
-            if args.no_harmonic == True:
-                ch_num = 2
-                args.channels = [0, 6] # Spec. and Ceps. channel
-                feature_type  = "CFP"
-            else:
-                ch_num = Harmonic_Num * 2
-                args.channels = [i for i in range(ch_num)] # Including harmonic channels
-                feature_type  = "HCFP"
-            # Output parameters
-            if args.mpe_only:
-                out_classes = 2
-            else:
-                out_classes = 12
-        # Train on MAPS
-        elif dataset_type == "MAPS":
+        if dataset_type == "MAPS":
             base_path = args.MAPS_feature_path
             out_classes = 2
             dataset_type = "MAPS"
@@ -106,9 +86,6 @@ def main():
                         type=str)
                         
     musicnet_parser = parser.add_argument_group("MusicNet parameters")
-    musicnet_parser.add_argument('--MusicNet-feature-path',
-                                 help='Path to pre-proccessed MusicNet features',
-                                 type=str)
     musicnet_parser.add_argument('--no-harmonic',
                                  help="Wether to use HCFP feature to train the model",
                                  action='store_true')
@@ -118,21 +95,14 @@ def main():
                                  action='store_true')
     
     parser.add_argument('-nd', '--num-datasets',
-                        help='Number of train_30.pickle files to load (default: %(default)d)',
+                        help='Number of train.pickle files to load (default: %(default)d)',
                         type=int, default=3)
     parser.add_argument('-c', '--channels',
                         help='Channels to use for training (default: %(default)s)',
-                        type=int, nargs='+', default=[1, 3]) # Candidates are: (0: Z), (1: Spec), (2: GCoS), 
-                                                             #                 (3: Ceps), for MAPS
+                        type=int, nargs='+', default=[1, 3]) #Spec and Ceps
 
 
     #arguments for training
-    parser.add_argument('-t', '--model_type',
-                        help='model type: seg or pnn (default: %(default)s)',
-                        type=str, default='seg')
-    parser.add_argument('-ms', '--model_path_symbolic',
-                        help='path to symbolic model (default: %(default)s)',
-                        type=str, default='model_symbolic')
     parser.add_argument('--use-ram',
                         help='If your ram is big enough for the entire dataset, it is recommand to turn this on, \
                         or the training progress would be very slow',
